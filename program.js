@@ -1,19 +1,14 @@
-"use strict"; // ??? 
-var str = 	"";
-var fs = 	require('fs');
-var http = 	require("http");
-var concat = require('concat-stream');
+var net = require('net');
 
-http.get(process.argv[2], function(res) {
-	res.setEncoding('utf8');
-	res.on("error", console.error);
-    res.on("data", function (data) {
-    	str += data;
-    });
-    res.on("end", function(){
-    	var num = str.length;
-    	console.log(num + "\n" + str);
-    });
-}).on('error',function(error){
-	console.log(error);
+function pad(n) { return n < 10 ? '0' + n : n }
+
+var server = net.createServer(function(socket) {
+  d = new Date();
+  s = d.getFullYear() + "-"
+    + pad(d.getMonth() + 1) + "-"
+    + pad(d.getDate()) + " "
+    + pad(d.getHours()) + ":"
+    + pad(d.getMinutes()) + "\n";
+  socket.end(s);
 });
+server.listen(process.argv[2]);
